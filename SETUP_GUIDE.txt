@@ -1,0 +1,299 @@
+NEOVIM SETUP GUIDE - FROM SCRATCH
+=====================================
+
+This guide will help you set up Neovim with this configuration on a new server from scratch.
+
+PREREQUISITES
+=============
+
+1. Git (for cloning the configuration)
+2. Curl or Wget (for downloading Neovim)
+3. Make (for building some tools)
+4. Node.js (for TypeScript/JavaScript tools)
+5. Python 3 (for Python tools)
+6. Go (for Go tools)
+
+STEP 1: INSTALL NEOVIM
+======================
+
+For Ubuntu/Debian:
+------------------
+sudo apt update
+sudo apt install -y software-properties-common
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt update
+sudo apt install -y neovim
+
+For CentOS/RHEL/Fedora:
+-----------------------
+# For CentOS/RHEL 8+
+sudo dnf install -y epel-release
+sudo dnf install -y neovim
+
+# For older CentOS/RHEL
+sudo yum install -y epel-release
+sudo yum install -y neovim
+
+For macOS (with Homebrew):
+-------------------------
+brew install neovim
+
+For Arch Linux:
+---------------
+sudo pacman -S neovim
+
+For other systems, download from:
+https://github.com/neovim/neovim/releases
+
+STEP 2: INSTALL DEPENDENCIES
+============================
+
+Install Git:
+------------
+# Ubuntu/Debian
+sudo apt install -y git
+
+# CentOS/RHEL/Fedora
+sudo dnf install -y git
+
+# macOS
+brew install git
+
+Install Make:
+-------------
+# Ubuntu/Debian
+sudo apt install -y build-essential
+
+# CentOS/RHEL/Fedora
+sudo dnf install -y make gcc
+
+# macOS
+xcode-select --install
+
+Install Node.js (for TypeScript/JavaScript tools):
+--------------------------------------------------
+# Using NodeSource repository (recommended)
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Or using nvm (Node Version Manager)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+nvm use --lts
+
+Install Python 3:
+-----------------
+# Ubuntu/Debian
+sudo apt install -y python3 python3-pip
+
+# CentOS/RHEL/Fedora
+sudo dnf install -y python3 python3-pip
+
+# macOS
+brew install python3
+
+Install Go (for Go development):
+-------------------------------
+# Download and install Go
+wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.21.0.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+source ~/.bashrc
+
+# Or using package manager
+# Ubuntu/Debian
+sudo apt install -y golang-go
+
+# CentOS/RHEL/Fedora
+sudo dnf install -y golang
+
+# macOS
+brew install go
+
+STEP 3: BACKUP EXISTING CONFIG (IF ANY)
+=======================================
+
+# Backup existing Neovim config if it exists
+if [ -d ~/.config/nvim ]; then
+    mv ~/.config/nvim ~/.config/nvim.backup.$(date +%Y%m%d_%H%M%S)
+fi
+
+STEP 4: CLONE THIS CONFIGURATION
+=================================
+
+# Clone the configuration
+git clone <YOUR_REPO_URL> ~/.config/nvim
+
+# Or if you have the files locally, copy them:
+# cp -r /path/to/your/nvim/config ~/.config/nvim
+
+STEP 5: START NEOVIM AND INSTALL PLUGINS
+=========================================
+
+# Start Neovim (this will automatically install Lazy.nvim and plugins)
+nvim
+
+# Wait for Lazy.nvim to install and sync plugins
+# This may take a few minutes on first run
+
+# If plugins don't install automatically, run:
+# :Lazy sync
+
+STEP 6: INSTALL LANGUAGE SERVERS AND TOOLS
+==========================================
+
+# Open Mason to install LSP servers and tools
+:Mason
+
+# Install the following tools (they should auto-install, but verify):
+- pyright (Python LSP)
+- gopls (Go LSP)
+- typescript-language-server (TypeScript LSP)
+- black (Python formatter)
+- isort (Python import sorter)
+- flake8 (Python linter)
+- mypy (Python type checker)
+- prettier (JavaScript/TypeScript formatter)
+- eslint (JavaScript/TypeScript linter)
+- gofumpt (Go formatter)
+- golines (Go line formatter)
+- stylua (Lua formatter)
+
+# Or install all at once:
+:MasonInstallAll
+
+STEP 7: VERIFY INSTALLATION
+===========================
+
+# Check LSP status
+:LspInfo
+
+# Check installed tools
+:Mason
+
+# Check plugin status
+:Lazy
+
+# Run health check
+:checkhealth
+
+STEP 8: TEST THE SETUP
+======================
+
+# Create test files to verify everything works:
+
+# Test Python
+echo 'def hello():
+    print("Hello from Python!")
+    return "success"
+
+if __name__ == "__main__":
+    result = hello()
+    print(f"Result: {result}")' > test.py
+
+# Test Go
+echo 'package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello from Go!")
+}' > test.go
+
+# Test TypeScript
+echo 'function hello(name: string): string {
+    return `Hello, ${name}!`;
+}
+
+const result = hello("TypeScript");
+console.log(result);' > test.ts
+
+# Open each file and test:
+# - Autocompletion (type and wait for suggestions)
+# - Go to definition (grd)
+# - Formatting (<leader>f)
+# - LSP features
+
+STEP 9: OPTIONAL CUSTOMIZATIONS
+===============================
+
+# Install a Nerd Font for better icons (optional)
+# Download from: https://www.nerdfonts.com/font-downloads
+# Install the font on your system
+
+# Enable Nerd Font in config (edit init.lua):
+# Change: vim.g.have_nerd_font = false
+# To:     vim.g.have_nerd_font = true
+
+# Add custom keybindings (edit init.lua):
+# Add your custom keymaps in the "Key mappings" section
+
+# Add additional plugins (edit init.lua):
+# Add new plugins to the lazy.nvim setup section
+
+TROUBLESHOOTING
+===============
+
+Common Issues:
+
+1. "Command not found: nvim"
+   - Make sure Neovim is installed and in your PATH
+   - Try: which nvim
+
+2. "Lazy.nvim not found"
+   - Restart Neovim and wait for auto-installation
+   - Or manually install: git clone https://github.com/folke/lazy.nvim.git ~/.local/share/nvim/lazy/lazy.nvim
+
+3. "LSP server not starting"
+   - Check :LspInfo for errors
+   - Verify tools are installed in :Mason
+   - Try :LspRestart
+
+4. "Formatting not working"
+   - Check if formatters are installed in :Mason
+   - Verify file type is supported
+   - Try manual format: <leader>f
+
+5. "Treesitter errors"
+   - Run :TSUpdate to update parsers
+   - Check :TSInstallInfo for missing parsers
+
+6. "Permission denied errors"
+   - Make sure you have write permissions to ~/.config/nvim
+   - Check permissions: ls -la ~/.config/nvim
+
+QUICK COMMANDS REFERENCE
+========================
+
+# Essential Neovim commands for setup:
+:Lazy sync          # Install/update plugins
+:Mason              # Install LSP servers and tools
+:LspInfo            # Check LSP status
+:checkhealth        # Run health diagnostics
+:TSUpdate           # Update Treesitter parsers
+
+# Key shortcuts (remember <leader> is spacebar):
+<leader>f           # Format current buffer
+<leader>e           # Toggle file explorer
+<leader>sf          # Search files
+<leader>sg          # Search by grep
+<leader>q           # Open diagnostic quickfix
+grd                 # Go to definition
+grr                 # Find references
+gra                 # Code actions
+
+FINAL NOTES
+===========
+
+- This configuration supports: Lua, Go, Python, TypeScript/JavaScript
+- Auto-formatting is enabled on save for all supported languages
+- LSP features work automatically when language servers are active
+- All tools are managed by Mason and installed automatically
+- Configuration is modular and easy to customize
+
+- First startup may take 2-3 minutes to install all plugins and tools
+- Subsequent startups should be much faster
+- Keep your configuration in version control for easy setup on new servers
+
+Happy coding! 🚀
