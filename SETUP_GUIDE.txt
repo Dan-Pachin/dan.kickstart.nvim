@@ -13,6 +13,15 @@ PREREQUISITES
 5. Python 3 (for Python tools)
 6. Go (for Go tools)
 
+IMPORTANT: Neovim Version Requirements
+=====================================
+This configuration requires Neovim 0.10+ for full compatibility with all plugins:
+- lazydev.nvim requires Neovim >= 0.10
+- blink.cmp requires nvim 0.10 and newer
+- nvim-lspconfig recommends Nvim 0.11+ (deprecating 0.10 support)
+
+If you get version-related errors, you need to update Neovim to 0.10+.
+
 STEP 1: INSTALL NEOVIM
 ======================
 
@@ -20,9 +29,12 @@ For Ubuntu/Debian:
 ------------------
 sudo apt update
 sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:neovim-ppa/stable
+sudo add-apt-repository ppa:neovim-ppa/unstable  # Use unstable for latest version
 sudo apt update
 sudo apt install -y neovim
+
+# Verify version (should be 0.10+)
+nvim --version
 
 For CentOS/RHEL/Fedora:
 -----------------------

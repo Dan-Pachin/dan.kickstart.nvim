@@ -69,8 +69,11 @@ install_basic_deps() {
 install_neovim() {
     print_status "Installing Neovim..."
     
-    # Add Neovim PPA
-    sudo add-apt-repository ppa:neovim-ppa/stable -y
+    # Remove any existing neovim installation
+    sudo apt remove neovim -y 2>/dev/null || true
+    
+    # Add Neovim PPA for latest version (unstable has newer versions)
+    sudo add-apt-repository ppa:neovim-ppa/unstable -y
     sudo apt update
     
     # Install Neovim
@@ -80,6 +83,15 @@ install_neovim() {
     if command_exists nvim; then
         NVIM_VERSION=$(nvim --version | head -n1)
         print_success "Neovim installed: $NVIM_VERSION"
+        
+        # Check if version is 0.10+
+        NEOVIM_VERSION_NUM=$(nvim --version | head -n1 | cut -d' ' -f2)
+        if [[ "$NEOVIM_VERSION_NUM" < "0.10" ]]; then
+            print_warning "Neovim version $NEOVIM_VERSION_NUM may be too old for some plugins"
+            print_warning "Consider updating to 0.10+ for full compatibility"
+        else
+            print_success "Neovim version $NEOVIM_VERSION_NUM is compatible with all plugins"
+        fi
     else
         print_error "Failed to install Neovim"
         exit 1
